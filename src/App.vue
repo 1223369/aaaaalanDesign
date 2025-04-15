@@ -2,9 +2,11 @@
 </script>
 
 <template>
-  <div>
-    1
-  </div>
+    <a-config-provider>
+        <router-view v-slot="{ Component }">
+            <component :is="Component" />
+        </router-view>
+    </a-config-provider>
 </template>
 
 <style scoped>

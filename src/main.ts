@@ -1,6 +1,20 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import './style.less'
-import 'virtual:svg-icons-register'
+import {createApp} from 'vue'
 
-createApp(App).mount('#app')
+import App from './App.vue'
+import router from '@/router'
+import ArcoVue from '@arco-design/web-vue';
+import '@arco-design/web-vue/dist/arco.css';
+// CSS
+import 'virtual:uno.css'
+import 'virtual:svg-icons-register'
+import './index.less'
+import '@/utils/request';
+// 额外引入图标库
+import ArcoVueIcon from '@arco-design/web-vue/es/icon';
+
+const app = createApp(App)
+app.use(router)
+app.use(ArcoVue);
+app.use(ArcoVueIcon);
+
+app.mount('#app')
