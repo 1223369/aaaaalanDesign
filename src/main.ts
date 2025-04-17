@@ -5,6 +5,7 @@ import router from '@/router'
 import ArcoVue from '@arco-design/web-vue';
 import '@arco-design/web-vue/dist/arco.css';
 // CSS
+import '@unocss/reset/tailwind-compat.css'
 import 'virtual:uno.css'
 import 'virtual:svg-icons-register'
 import './index.less'

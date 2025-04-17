@@ -3,9 +3,9 @@
   -moz-user-select: none;
   user-select: none;
 }
-
 /* 兼容 IE 浏览器 */
 .not-select {
   -ms-user-select: none;
   user-select: none;
 }
+/*# sourceMappingURL=./index.css.map */

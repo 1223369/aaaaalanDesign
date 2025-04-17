@@ -1,4 +1,6 @@
 import Home from '@/views/Home/home.vue'
+import Editor from '@/views/Editor/index.vue'
+import CusComponents from '@/views/CusComponents/index.vue'
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 const router = createRouter({
@@ -6,8 +8,18 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: '',
+      name: 'Home',
       component: Home,
+    },
+    {
+      path: '/editor',
+      name: 'Editor',
+      component: Editor,
+    },
+    {
+      path: '/cusComponents',
+      name: 'CusComponents',
+      component: CusComponents,
     }
   ]
 })
