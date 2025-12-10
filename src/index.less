@@ -9,3 +9,16 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+.icon-btn {
+    background-color: transparent !important;
+
+    &:not(.arco-btn-disabled) {
+        &:hover {
+            background-color: var(--color-secondary-hover) !important;
+        }
+        &:active {
+            background-color: var(--color-secondary-active) !important;
+        }
+    }
+}

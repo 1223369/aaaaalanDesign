@@ -8,4 +8,13 @@
   -ms-user-select: none;
   user-select: none;
 }
+.icon-btn {
+  background-color: transparent !important;
+}
+.icon-btn:not(.arco-btn-disabled):hover {
+  background-color: var(--color-secondary-hover) !important;
+}
+.icon-btn:not(.arco-btn-disabled):active {
+  background-color: var(--color-secondary-active) !important;
+}
 /*# sourceMappingURL=./index.css.map */
