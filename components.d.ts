@@ -7,19 +7,14 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ABbutton: typeof import('@arco-design/web-vue')['Bbutton']
     AButton: typeof import('@arco-design/web-vue')['Button']
     AConfigProvider: typeof import('@arco-design/web-vue')['ConfigProvider']
     ADivider: typeof import('@arco-design/web-vue')['Divider']
     ADoption: typeof import('@arco-design/web-vue')['Doption']
     ADropdown: typeof import('@arco-design/web-vue')['Dropdown']
-    AFonfigProvider: typeof import('@arco-design/web-vue')['FonfigProvider']
     ALayout: typeof import('@arco-design/web-vue')['Layout']
     ALayoutHeader: typeof import('@arco-design/web-vue')['LayoutHeader']
-    AModal: typeof import('@arco-design/web-vue')['Modal']
     APopover: typeof import('@arco-design/web-vue')['Popover']
-    AProgress: typeof import('@arco-design/web-vue')['Progress']
-    AResult: typeof import('@arco-design/web-vue')['Result']
     ASpace: typeof import('@arco-design/web-vue')['Space']
     ASpin: typeof import('@arco-design/web-vue')['Spin']
     ATooltip: typeof import('@arco-design/web-vue')['Tooltip']
