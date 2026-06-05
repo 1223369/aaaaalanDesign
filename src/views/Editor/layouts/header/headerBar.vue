@@ -21,14 +21,14 @@
         <a-space size="medium">
           <a-tooltip effect="dark" content="标尺" mini>
             <a-button class="icon-btn pd-5px" @click="changeLineGuides">
-              <icon-paste
-                :size="18"
-              />
+              <icon-paste :size="18" />
             </a-button>
           </a-tooltip>
         </a-space>
         <a-divider direction="vertical" />
         <operation />
+        <a-divider direction="vertical" />
+        <zoom />
       </div>
     </div>
   </div>
@@ -38,6 +38,7 @@
 import FileOper from "./left/fileOper.vue";
 import Undo from "./left/undo.vue";
 import Operation from "./left/operation.vue";
+import Zoom from './left/zoom.vue'
 
 const changeLineGuides = () => {
   console.log("切换标尺");
