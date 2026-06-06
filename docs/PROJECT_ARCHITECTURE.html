@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gzm Design 架构图</title>
+  <style>
+    body { margin: 0; font-family: Arial, "Microsoft Yahei", sans-serif; background: #f4f6fb; color: #1f2937; }
+    .page { max-width: 1180px; margin: 0 auto; padding: 32px; }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    .desc { margin: 0 0 28px; color: #64748b; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, .06); }
+    .card h2 { margin: 0 0 12px; font-size: 18px; }
+    .item { padding: 10px 12px; margin: 8px 0; border-radius: 10px; background: #f8fafc; border: 1px solid #e2e8f0; }
+    .core { background: #eff6ff; border-color: #bfdbfe; }
+    .canvas { background: #ecfdf5; border-color: #bbf7d0; }
+    .data { background: #fff7ed; border-color: #fed7aa; }
+    .flow { margin-top: 24px; background: #0f172a; color: #e5e7eb; border-radius: 16px; padding: 22px; overflow-x: auto; }
+    .flow pre { margin: 0; line-height: 1.8; font-size: 15px; }
+    .arrow { text-align: center; color: #64748b; font-weight: bold; padding: 8px 0; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .page { padding: 18px; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>Gzm Design 架构图</h1>
+    <p class="desc">Vue UI、编辑器服务、Leafer 画布、数据服务之间的协作关系。</p>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Vue UI 层</h2>
+        <div class="item">Editor/editor.vue</div>
+        <div class="item">HeaderBar</div>
+        <div class="item">LeftPanel 素材栏</div>
+        <div class="item">CanvasEdit 画布挂载</div>
+        <div class="item">RightPanel 属性和图层</div>
+      </div>
+
+      <div class="card">
+        <h2>应用服务层</h2>
+        <div class="item core">createCore</div>
+        <div class="item core">EditorMain</div>
+        <div class="item core">useEditor</div>
+        <div class="item core">Plugin System</div>
+        <div class="item core">Lifecycle Dispose</div>
+      </div>
+
+      <div class="card">
+        <h2>画布核心层</h2>
+        <div class="item canvas">MLeaferCanvas</div>
+        <div class="item canvas">Leafer App</div>
+        <div class="item canvas">contentLayer</div>
+        <div class="item canvas">contentFrame</div>
+        <div class="item canvas">Custom Shapes</div>
+      </div>
+
+      <div class="card">
+        <h2>状态层</h2>
+        <div class="item data">Pinia appStore</div>
+        <div class="item data">Pinia fontStore</div>
+        <div class="item data">activeTool</div>
+        <div class="item data">activeObject</div>
+      </div>
+
+      <div class="card">
+        <h2>服务层</h2>
+        <div class="item core">WorkspacesService</div>
+        <div class="item core">EventbusService</div>
+        <div class="item core">HierarchyService</div>
+        <div class="item core">KeybindingService</div>
+        <div class="item core">UndoRedoService</div>
+      </div>
+
+      <div class="card">
+        <h2>外部数据</h2>
+        <div class="item data">API editor</div>
+        <div class="item data">MockJS</div>
+        <div class="item data">PSD parser</div>
+        <div class="item data">assets/data</div>
+        <div class="item data">fonts</div>
+      </div>
+    </section>
+
+    <section class="flow">
+      <pre>启动链路:
+index.html
+  -> src/main.ts
+  -> createApp(App)
+  -> app.use(core)
+  -> router-view 渲染 /editor
+  -> EditorMain.startup()
+  -> initServices()
+  -> 创建 MLeaferCanvas
+  -> canvasEdit.vue append(canvas.wrapperEl)
+
+添加文字链路:
+TextListWrap.vue 点击
+  -> new Text / new HTMLText
+  -> editor.add(text)
+  -> contentFrame.add(text)
+  -> selectObject(text)
+  -> childrenEffect()
+  -> 图层面板和属性面板更新
+
+切换页面链路:
+WorkspacesService.setCurrentId
+  -> workspaceChangeBefore
+  -> 保存旧页面 contentFrame.toJSON()
+  -> workspaceChangeAfter
+  -> importJsonToCurrentPage(newPage)
+  -> zoomToFit()
+      </pre>
+    </section>
+  </main>
+</body>
+</html>
