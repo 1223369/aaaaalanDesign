@@ -18,8 +18,9 @@
     "@unocss/reset": "^0.57.7",
     "pinia": "^2.3.0",
     "lodash": "^4.17.23",
-    "leafer-x-ruler": "^1.0.14",
-    "uuid": "^9.0.1"
+    "leafer-x-ruler": "^2.0.1",
+    "uuid": "^9.0.1",
+    "fontfaceobserver": "^2.3.0"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.56.3",
@@ -32,6 +33,7 @@
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.5.5",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vue-tsc": "^1.8.27"
+    "vue-tsc": "^1.8.27",
+    "@types/fontfaceobserver": "^2.1.3"
   }
 }

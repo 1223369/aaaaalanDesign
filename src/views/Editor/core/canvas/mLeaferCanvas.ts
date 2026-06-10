@@ -5,13 +5,14 @@ import { Ruler } from "leafer-x-ruler";
 import { EditTool } from "app";
 import { toFixed } from "@/utils/math";
 import { SignaturePluginOptions } from "./penDraw";
-import { useAppStore } from "@/store";
+import { useAppStore, useFontStore } from "@/store";
 import {
   IWorkspacesService,
   WorkspacesService,
 } from "../workspaces/workspacesService";
 import { EventbusService, IEventbusService } from "../eventbus/eventbusService";
 import { HierarchyService, IHierarchyService } from "../layer/hierarchyService";
+import { addCustomFonts } from "@/utils/fonts/utils";
 
 type ExtendedOption = {
   width: number;
