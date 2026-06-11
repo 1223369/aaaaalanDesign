@@ -1,6 +1,6 @@
 // import { IFabricCanvas } from '@/views/Editor/core/canvas/fabricCanvas'
 import { IEditorUndoRedoService } from "@/views/Editor/app/editor/undoRedo/undoRedoService";
-// import { IKeybindingService } from '@/views/Editor/core/keybinding/keybindingService'
+import { IKeybindingService } from "@/views/Editor/core/keybinding/keybindingService";
 // // import { IEventbusService } from '@/views/Editor/core/eventbus/eventbusService'
 // // import { IWorkspacesService } from '@/views/Editor/core/workspaces/workspacesService'
 import { EditorMain } from "@/views/Editor/app/editor";
