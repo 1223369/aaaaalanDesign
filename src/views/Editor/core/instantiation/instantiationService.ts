@@ -8,13 +8,13 @@ import {
   _util,
 } from "./instantiation";
 import { ServiceCollection } from "./serviceCollection";
-import { IdleValue } from "@/views/Editor/utills/async";
+import { IdleValue } from "@/views/Editor/utils/async";
 import { LinkedList } from "@/utils/linkedList";
 import {
   toDisposable,
   IDisposable,
   DisposableStore,
-} from "@/views/Editor/utills/lifecycle";
+} from "@/views/Editor/utils/lifecycle";
 
 interface Event<T> {
   (

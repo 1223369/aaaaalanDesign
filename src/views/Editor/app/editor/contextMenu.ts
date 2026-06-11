@@ -1,5 +1,5 @@
 import { IMLeaferCanvas, MLeaferCanvas } from "../../core/canvas/mLeaferCanvas";
-import { Disposable } from "../../utills/lifecycle";
+import { Disposable } from "../../utils/lifecycle";
 import { Point, PointerEvent } from "leafer-ui";
 
 export class ContextMenu extends Disposable {
