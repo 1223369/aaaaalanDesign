@@ -1,5 +1,5 @@
 import { useEditor } from "@/views/Editor/app";
-// import { keybindMap } from "@/views/Editor/utils/constants";
+import { keybindMap } from "@/views/Editor/utils/constants";
 import { Group } from "leafer-ui";
 import type { MenuItem } from "@/components/contextMenu/ContextMenuDefine";
 

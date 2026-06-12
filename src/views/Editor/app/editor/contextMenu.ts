@@ -1,4 +1,5 @@
 import { IMLeaferCanvas, MLeaferCanvas } from "../../core/canvas/mLeaferCanvas";
+import { IKeybindingService, KeybindingService } from "../../core/keybinding/keybindingService";
 import { Disposable } from "../../utils/lifecycle";
 import { Point, PointerEvent } from "leafer-ui";
 import MenuComponent from "@/components/contextMenu";
