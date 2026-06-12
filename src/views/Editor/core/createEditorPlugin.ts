@@ -1,4 +1,4 @@
-import type { EditorPlugin } from "./type";
+import type { EditorPlugin } from "./types";
 
 export const createEditorPlugin = (plugin: EditorPlugin) => plugin;
 

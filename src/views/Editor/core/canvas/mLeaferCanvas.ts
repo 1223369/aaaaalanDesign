@@ -1,6 +1,8 @@
 import {
   App,
   ChildEvent,
+  DragEvent,
+  DropEvent,
   Frame,
   IUI,
   Leafer,
@@ -312,6 +314,10 @@ export class MLeaferCanvas {
     return this.pages.get(id);
   }
 
+  public activeObjectIsType(...types: ObjectType[]) {
+    return types.includes(<ObjectType>this.activeObject.value?.tag);
+  }
+
   /**
    * 导入JSON到当前页中
    * @param json json
@@ -365,6 +371,40 @@ export class MLeaferCanvas {
     this.setActiveObjectValue(this.contentFrame);
   }
 
+  /**
+   * 选中元素
+   * @param target
+   */
+  public selectObject(target: IUI | null) {
+    if (this.activeTool === "select") {
+      // 选择器
+      console.log("选中：", target);
+      this.app.editor.target = target;
+      console.log("Editor element：", this.app.editor.element);
+      this.setActiveObjectValue(this.app.editor.element);
+    }
+  }
+
+  /**
+   * 添加元素
+   * @param _child 元素
+   * @param _index 层级
+   */
+  public add(_child: IUI, _index?: number) {
+    if (this.objectIsTypes(_child, "Group", "Box")) {
+      this.bindDragDrop(_child);
+    }
+    if (!_child.zIndex) {
+      const topLevel = this.hierarchyService.getTopLevel().zIndex;
+      _child.zIndex = topLevel + 1;
+    }
+    this.contentFrame.add(_child, _index);
+
+    // 选中提添加的元素
+    this.selectObject(_child);
+    this.childrenEffect();
+  }
+
   public objectIsTypes(object: any, ...types: ObjectType[]) {
     return types.includes(<ObjectType>object?.tag);
   }
@@ -391,6 +431,14 @@ export class MLeaferCanvas {
 
   set app(value: App) {
     this._app = value;
+  }
+
+  public getActiveObjects(): IUI[] {
+    return this.app.editor.list;
+  }
+
+  public getActiveObject() {
+    return this.activeObject.value;
   }
 
   public zoomToInnerPoint(zoom?: number) {
@@ -420,6 +468,32 @@ export class MLeaferCanvas {
   public childrenEffect() {
     this.ref._children.value = [];
     this.ref._children.value = this.contentFrame.children;
+  }
+
+  /**
+   * 绑定组的元素拖动放置事件
+   * @param group
+   */
+  public bindDragDrop(group: IUI) {
+    const that = this;
+    group.on(DragEvent.ENTER, function () {
+      DragEvent.setData({ data: "drop data" });
+    });
+    group.on(DropEvent.DROP, function (e: DropEvent) {
+      e.list.forEach((leaf) => {
+        if (leaf.innerId !== group.innerId) {
+          leaf.dropTo(group); // 放置元素到group中
+        }
+      });
+    });
+    group.on(DragEvent.OUT, function (e: DropEvent) {
+      if (that.objectIsTypes(e.current, "Group")) {
+        e.target.dropTo(e.current.parent);
+      }
+    });
+  }
+  public setActiveObjects(objects: IUI[] | undefined) {
+    this.app.editor.target = objects;
   }
 }
 
