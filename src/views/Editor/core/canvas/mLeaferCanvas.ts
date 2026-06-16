@@ -1,6 +1,16 @@
-import { App, Frame, IUI, Leafer } from "leafer-ui";
+import {
+  App,
+  ChildEvent,
+  DragEvent,
+  DropEvent,
+  Frame,
+  IUI,
+  Leafer,
+  PropertyEvent,
+  ResizeEvent,
+} from "leafer-ui";
 import { createDecorator } from "../instantiation/instantiation";
-import { ILeafer } from "@leafer-ui/interface";
+import { ILeafer, IUIInputData } from "@leafer-ui/interface";
 import { Ruler } from "leafer-x-ruler";
 import { EditTool } from "app";
 import { toFixed } from "@/utils/math";
@@ -13,6 +23,10 @@ import {
 import { EventbusService, IEventbusService } from "../eventbus/eventbusService";
 import { HierarchyService, IHierarchyService } from "../layer/hierarchyService";
 import { addCustomFonts } from "@/utils/fonts/utils";
+import { v4 as uuidv4 } from "uuid";
+import { BOTTOM_CANVAS_NAME } from "@/views/Editor/utils/constants";
+import { EditorEvent } from "@leafer-in/editor";
+import { typeUtil } from "../../utils/utils";
 
 type ExtendedOption = {
   width: number;
@@ -252,8 +266,8 @@ export class MLeaferCanvas {
       // 监听最底层画布xy变化 触发布局移动事件（用于辅助线跟随画布移动）
       // @ts-ignore
       if (
-        (typeUtil.isBottomCanvas(e2.target) ||
-          typeUtil.isBottomLeafer(e2.target)) &&
+        (typeUtil.isBottomCanvas(e2.target as IUI) ||
+          typeUtil.isBottomLeafer(e2.target as IUI)) &&
         e2.newValue &&
         ["x", "y"].includes(e2.attrName)
       ) {
@@ -273,6 +287,66 @@ export class MLeaferCanvas {
       this.eventbus.emit("layoutResizeEvent", e2);
       initFrameWH = false;
     });
+  }
+
+  private setPageJSON(id: string, json: Partial<Page | IUIInputData | any>) {
+    if (id === "") return;
+    this.pages.set(id, {
+      children: [],
+      name: BOTTOM_CANVAS_NAME,
+      id: id,
+      ...json,
+    });
+  }
+
+  /**
+   * 根据id获取页面的json数据
+   * 注意：getPageJSON必须在setCurrentId之后执行，否则要页面中的数据可能还未保存
+   * @param id 页面ID
+   */
+  public getPageJSON(id: string): Page | undefined {
+    if (id === this.pageId) {
+      return {
+        ...this.pages.get(id),
+        children: this.ref._children.value,
+      };
+    }
+    return this.pages.get(id);
+  }
+
+  public activeObjectIsType(...types: ObjectType[]) {
+    return types.includes(<ObjectType>this.activeObject.value?.tag);
+  }
+
+  /**
+   * 导入JSON到当前页中
+   * @param json json
+   * @param clearHistory 是否清除历史画布数据
+   */
+  public async importJsonToCurrentPage(json: any, clearHistory?: boolean) {
+    if (clearHistory) {
+      this.contentFrame.clear();
+    }
+    console.log("json", json);
+    if (json) {
+      this.contentFrame.set(json);
+      this.discardActiveObject();
+      useAppStore().activeTool = "select";
+      this.childrenEffect();
+    }
+    this.zoomToFit();
+    useFontStore()
+      .extractTemplateFonts(json, true)
+      .then((value) => {
+        const texts = this.contentFrame.findTag("Text");
+        for (let i = 0; i < texts.length; i++) {
+          texts[i].forceRender();
+        }
+        const htmls = this.contentFrame.findTag("HTMLText");
+        for (let i = 0; i < htmls.length; i++) {
+          htmls[i].forceRender();
+        }
+      });
   }
 
   public setActiveObjectValue(object: IUI | null) {
@@ -295,6 +369,40 @@ export class MLeaferCanvas {
   public discardActiveObject() {
     this.app.editor.target = null;
     this.setActiveObjectValue(this.contentFrame);
+  }
+
+  /**
+   * 选中元素
+   * @param target
+   */
+  public selectObject(target: IUI | null) {
+    if (this.activeTool === "select") {
+      // 选择器
+      console.log("选中：", target);
+      this.app.editor.target = target;
+      console.log("Editor element：", this.app.editor.element);
+      this.setActiveObjectValue(this.app.editor.element);
+    }
+  }
+
+  /**
+   * 添加元素
+   * @param _child 元素
+   * @param _index 层级
+   */
+  public add(_child: IUI, _index?: number) {
+    if (this.objectIsTypes(_child, "Group", "Box")) {
+      this.bindDragDrop(_child);
+    }
+    if (!_child.zIndex) {
+      const topLevel = this.hierarchyService.getTopLevel().zIndex;
+      _child.zIndex = topLevel + 1;
+    }
+    this.contentFrame.add(_child, _index);
+
+    // 选中提添加的元素
+    this.selectObject(_child);
+    this.childrenEffect();
   }
 
   public objectIsTypes(object: any, ...types: ObjectType[]) {
@@ -325,9 +433,22 @@ export class MLeaferCanvas {
     this._app = value;
   }
 
+  public getActiveObjects(): IUI[] {
+    return this.app.editor.list;
+  }
+
+  public getActiveObject() {
+    return this.activeObject.value;
+  }
+
   public zoomToInnerPoint(zoom?: number) {
     this.ref.zoom.value = zoom;
     this.app.tree.zoom(zoom);
+  }
+
+  public zoomToFit() {
+    this.app.tree.zoom("fit");
+    this.ref.zoom.value = <number>this.contentLayer.scale;
   }
 
   public setZoom(scale: number | undefined) {
@@ -341,7 +462,41 @@ export class MLeaferCanvas {
       return 1;
     }
   }
+  /**
+   * 执行调度器 更新_children值
+   */
+  public childrenEffect() {
+    this.ref._children.value = [];
+    this.ref._children.value = this.contentFrame.children;
+  }
+
+  /**
+   * 绑定组的元素拖动放置事件
+   * @param group
+   */
+  public bindDragDrop(group: IUI) {
+    const that = this;
+    group.on(DragEvent.ENTER, function () {
+      DragEvent.setData({ data: "drop data" });
+    });
+    group.on(DropEvent.DROP, function (e: DropEvent) {
+      e.list.forEach((leaf) => {
+        if (leaf.innerId !== group.innerId) {
+          leaf.dropTo(group); // 放置元素到group中
+        }
+      });
+    });
+    group.on(DragEvent.OUT, function (e: DropEvent) {
+      if (that.objectIsTypes(e.current, "Group")) {
+        e.target.dropTo(e.current.parent);
+      }
+    });
+  }
+  public setActiveObjects(objects: IUI[] | undefined) {
+    this.app.editor.target = objects;
+  }
 }
+
 /**
  * Edited type.ts
 Edited type.ts

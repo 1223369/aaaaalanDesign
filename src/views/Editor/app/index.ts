@@ -1,12 +1,12 @@
 // import { IFabricCanvas } from '@/views/Editor/core/canvas/fabricCanvas'
 import { IEditorUndoRedoService } from "@/views/Editor/app/editor/undoRedo/undoRedoService";
-// import { IKeybindingService } from '@/views/Editor/core/keybinding/keybindingService'
+import { IKeybindingService } from "@/views/Editor/core/keybinding/keybindingService";
 // // import { IEventbusService } from '@/views/Editor/core/eventbus/eventbusService'
 // // import { IWorkspacesService } from '@/views/Editor/core/workspaces/workspacesService'
 import { EditorMain } from "@/views/Editor/app/editor";
-// import {IMLeaferCanvas} from "@/views/Editor/core/canvas/mLeaferCanvas";
-// import {IWorkspacesService} from "@/views/Editor/core/workspaces/workspacesService";
-// import {IEventbusService} from "@/views/Editor/core/eventbus/eventbusService";
+import { IMLeaferCanvas } from "@/views/Editor/core/canvas/mLeaferCanvas";
+import { IWorkspacesService } from "@/views/Editor/core/workspaces/workspacesService";
+import { IEventbusService } from "@/views/Editor/core/eventbus/eventbusService";
 
 export interface ICoreApp {
   editor: EditorMain;

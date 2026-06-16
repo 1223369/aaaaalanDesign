@@ -1,4 +1,4 @@
-import { Disposable } from "@/views/Editor/utills/lifecycle";
+import { Disposable } from "@/views/Editor/utils/lifecycle";
 import { IInstantiationService } from "@/views/Editor/core/instantiation/instantiation";
 import type { EffectScope } from "vue";
 

@@ -6,7 +6,7 @@ import { Input } from "@arco-design/web-vue";
 import { isDefined } from "@vueuse/core";
 import { useEditor } from "@/views/Editor/app";
 import { isNumber } from "lodash";
-import { zoomItems } from "@/views/Editor/utills/contextMenu";
+import { zoomItems } from "@/views/Editor/utils/contextMenu";
 
 const { canvas, keybinding } = useEditor();
 

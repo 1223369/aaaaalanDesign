@@ -3,7 +3,7 @@ import {
   EventbusService,
   IEventbusService,
 } from "@/views/Editor/core/eventbus/eventbusService";
-import { Disposable } from "@/views/Editor/utills/lifecycle";
+import { Disposable } from "@/views/Editor/utils/lifecycle";
 import { v4 as uuidv4 } from "uuid";
 
 export const IWorkspacesService =

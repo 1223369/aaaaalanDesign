@@ -1,4 +1,4 @@
-import type { ICore } from "./type";
+import type { ICore } from "./types";
 
 export let activeCore: ICore;
 
