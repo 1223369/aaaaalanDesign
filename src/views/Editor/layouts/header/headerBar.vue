@@ -30,6 +30,13 @@
         <a-divider direction="vertical" />
         <zoom />
       </div>
+      <div class="truncate"></div>
+
+      <div class="flex-1 flex justify-center">
+        <div class="truncate">
+          <tool-bar />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -38,7 +45,8 @@
 import FileOper from "./left/fileOper.vue";
 import Undo from "./left/undo.vue";
 import Operation from "./left/operation.vue";
-import Zoom from './left/zoom.vue'
+import Zoom from "./left/zoom.vue";
+import ToolBar from "./center/toolBar.vue";
 
 const changeLineGuides = () => {
   console.log("切换标尺");

@@ -1,0 +1,46 @@
+<template>
+  <div>
+    <a-tooltip effect="dark" content="创建分组" mini>
+      <a-button
+        class="icon-btn pd-5px"
+        @click=""
+        :disabled="!isGroupBtnEnabled"
+      >
+        <SvgIcon name="object-group"></SvgIcon>
+      </a-button>
+    </a-tooltip>
+    <a-tooltip effect="dark" content="解除分组" mini>
+      <a-button
+        class="icon-btn pd-5px"
+        @click="handleUnGroupBtnClick"
+        :disabled="!isUnGroupBtnEnabled"
+      >
+        <SvgIcon name="object-ungroup"></SvgIcon>
+      </a-button>
+    </a-tooltip>
+  </div>
+</template>
+
+<script setup lang="ts">
+import SvgIcon from "@/components/svgIcon";
+import { useEditor } from "@/views/Editor/app";
+
+const editor = useEditor();
+const canvas = editor?.canvas;
+const keybinding = editor?.keybinding;
+
+const isGroupBtnEnabled = computed(() => {
+  return (
+    !canvas?.activeObjectIsType("Frame") &&
+    canvas?.getActiveObjects().length > 1
+  );
+});
+
+const isUnGroupBtnEnabled = computed(() => {
+  return canvas?.activeObjectIsType("Group");
+});
+
+const handleGroupBtnClick = () => {};
+
+const handleUnGroupBtnClick = () => {};
+</script>
