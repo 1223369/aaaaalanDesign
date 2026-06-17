@@ -1,4 +1,5 @@
-import mousetrap, { ExtendedKeyboardEvent } from "mousetrap";
+import mousetrap from "mousetrap";
+import type { ExtendedKeyboardEvent } from "mousetrap";
 import { createDecorator } from "@/views/Editor/core/instantiation/instantiation";
 import { isArray, isFunction, isObject, isString } from "lodash";
 import {
