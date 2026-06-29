@@ -5,7 +5,7 @@
         <icon-undo :size="18" />
       </a-button>
     </a-tooltip>
-      <a-tooltip effect="dark" content="恢复" mini>
+    <a-tooltip effect="dark" content="恢复" mini>
       <a-button class="icon-btn pd-5px" @click="redo()">
         <icon-redo :size="18" />
       </a-button>
@@ -14,14 +14,15 @@
 </template>
 
 <script setup lang="ts">
+import { useEditor } from "@/views/Editor/app";
+
+const { canvas, keybinding, undoRedo } = useEditor();
 const undo = () => {
-  // Implement your undo logic here
-  console.log("undo");
+  keybinding.trigger("mod+z");
 };
 
 const redo = () => {
-  // Implement your redo logic here
-  console.log("redo");
+  keybinding.trigger("mod+y");
 };
 </script>
 
