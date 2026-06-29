@@ -81,7 +81,11 @@ const fileOper = (type: string) => {
     case "importPsdFile":
       importPsdFile();
       break;
-    default:
+    case "importJsonFile":
+      importJsonFile();
+      break;
+    case "copyFile":
+      copyFile();
       break;
   }
 };
@@ -155,6 +159,29 @@ const importPsdFile = () => {
     }
   });
 };
+
+/**
+ * 导入JSON文件
+ * @param layers
+ * @param parent
+ */
+const importJsonFile = () => {
+  selectFiles({ accept: ".json" }).then((files) => {
+    visible.value = true;
+    processTitle.value = "正在导入JSON文件";
+    console.log("开始执行");
+
+    const file = files[0];
+    const reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onload = () => {
+      canvas.importJsonToCurrentPage(JSON.parse(<string>reader.result), true);
+      visible.value = false;
+    };
+  });
+};
+
+const copyFile = () => {};
 
 const parseLayers = (layers: Layer[], parent: IUI = canvas.contentFrame) => {
   return new Promise((resolve) => {
