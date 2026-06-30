@@ -52,6 +52,20 @@ export function checkFileExt(file: File | Blob, fileTypes: any | []) {
 }
 
 /**
+ * @description: 前端下载文件
+ * @param {String} fileStr
+ * @param fileName
+ */
+export function downFile(fileStr: string, fileName: string) {
+  const anchorEl = document.createElement("a");
+  anchorEl.href = fileStr;
+  anchorEl.download = fileName;
+  document.body.appendChild(anchorEl); // required for firefox
+  anchorEl.click();
+  anchorEl.remove();
+}
+
+/**
  * @description: 图片文件转字符串
  * @param {Blob|File} file 文件
  * @return {String}

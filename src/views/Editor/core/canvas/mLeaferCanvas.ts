@@ -314,6 +314,25 @@ export class MLeaferCanvas {
     return this.pages.get(id);
   }
 
+  /**
+   * 获取多页面JSON
+   */
+  public getPages() {
+    this.setPageJSON(this.pageId, this.contentFrame.toJSON());
+    return this.pages;
+  }
+
+  /**
+   * 获取当前页面JSON
+   */
+  public getCurrentPage(): Page {
+    this.setPageJSON(
+      this.workspacesService.getCurrentId(),
+      this.contentFrame.toJSON(),
+    );
+    return this.pages.get(<string>this.pageId);
+  }
+
   public activeObjectIsType(...types: ObjectType[]) {
     return types.includes(<ObjectType>this.activeObject.value?.tag);
   }
