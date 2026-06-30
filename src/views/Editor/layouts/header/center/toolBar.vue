@@ -3,7 +3,7 @@
     <a-tooltip effect="dark" content="创建分组" mini>
       <a-button
         class="icon-btn pd-5px"
-        @click=""
+        @click="handleGroupBtnClick"
         :disabled="!isGroupBtnEnabled"
       >
         <SvgIcon name="object-group"></SvgIcon>
@@ -24,6 +24,7 @@
 <script setup lang="ts">
 import SvgIcon from "@/components/svgIcon";
 import { useEditor } from "@/views/Editor/app";
+import { keybindMap } from "@/views/Editor/utils/constants";
 
 const editor = useEditor();
 const canvas = editor?.canvas;
@@ -40,7 +41,15 @@ const isUnGroupBtnEnabled = computed(() => {
   return canvas?.activeObjectIsType("Group");
 });
 
-const handleGroupBtnClick = () => {};
+const handleGroupBtnClick = () => {
+  if (isGroupBtnEnabled.value) {
+    keybinding.trigger(keybindMap.group);
+  }
+};
 
-const handleUnGroupBtnClick = () => {};
+const handleUnGroupBtnClick = () => {
+  if (isUnGroupBtnEnabled.value) {
+    keybinding.trigger(keybindMap.ungroup);
+  }
+};
 </script>
