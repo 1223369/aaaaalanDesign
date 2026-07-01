@@ -37,6 +37,9 @@
           <tool-bar />
         </div>
       </div>
+      <div class="flex-1 flex justify-end">
+        <save-oper />
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +50,7 @@ import Undo from "./left/undo.vue";
 import Operation from "./left/operation.vue";
 import Zoom from "./left/zoom.vue";
 import ToolBar from "./center/toolBar.vue";
+import SaveOper from "./right/saveOper.vue";
 
 const changeLineGuides = () => {
   console.log("切换标尺");

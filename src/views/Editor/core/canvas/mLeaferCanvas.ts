@@ -405,6 +405,15 @@ export class MLeaferCanvas {
   }
 
   /**
+   * 重新加载json数据（一般用于切换页面）
+   * @param json
+   */
+  public reLoadFromJSON(json: Partial<Page | IUIInputData | any>) {
+    this.importJsonToCurrentPage(json, true);
+    this.setZoom(json.scale);
+  }
+
+  /**
    * 添加元素
    * @param _child 元素
    * @param _index 层级
