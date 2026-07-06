@@ -26,30 +26,28 @@ import SvgIcon from "@/components/svgIcon";
 import { useEditor } from "@/views/Editor/app";
 import { keybindMap } from "@/views/Editor/utils/constants";
 
-const editor = useEditor();
-const canvas = editor?.canvas;
-const keybinding = editor?.keybinding;
-
 const isGroupBtnEnabled = computed(() => {
+  const canvas = useEditor()?.canvas;
   return (
     !canvas?.activeObjectIsType("Frame") &&
-    canvas?.getActiveObjects().length > 1
+    (canvas?.getActiveObjects().length ?? 0) > 1
   );
 });
 
 const isUnGroupBtnEnabled = computed(() => {
+  const canvas = useEditor()?.canvas;
   return canvas?.activeObjectIsType("Group");
 });
 
 const handleGroupBtnClick = () => {
   if (isGroupBtnEnabled.value) {
-    keybinding.trigger(keybindMap.group);
+    useEditor()?.keybinding.trigger(keybindMap.group);
   }
 };
 
 const handleUnGroupBtnClick = () => {
   if (isUnGroupBtnEnabled.value) {
-    keybinding.trigger(keybindMap.ungroup);
+    useEditor()?.keybinding.trigger(keybindMap.ungroup);
   }
 };
 </script>

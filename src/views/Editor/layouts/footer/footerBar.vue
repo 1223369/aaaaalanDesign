@@ -7,7 +7,7 @@
           v-for="(item, index) in workspacesData"
           @click="onSelect(item)"
           @contextmenu.stop="openContextMenu($event, item)"
-          :class="{ 'page-selected': workspaces.getCurrentId() === item.id }"
+          :class="{ 'page-selected': useEditor()?.workspaces?.getCurrentId() === item.id }"
           :key="index"
         >
           <a-avatar class="page-ava" :size="30" shape="square">{{
@@ -27,14 +27,16 @@ import { IWorkspace } from "../../core/workspaces/workspacesService";
 import { useEditor } from "@/views/Editor/app";
 import ContextMenu from "@/components/contextMenu";
 
-const { canvas, workspaces, event } = useEditor();
+
 const workspacesData = ref<IWorkspace[]>([]);
 
 const pages = computed(() => {
-  return canvas.getPages();
+  return useEditor()?.canvas?.getPages() ?? new Map();
 });
 
 const updateWorkspaces = () => {
+  const workspaces = useEditor()?.workspaces;
+  if (!workspaces) return;
   workspacesData.value = workspaces.all().map((workspace) => ({
     id: workspace.id,
     name: workspace.name,
@@ -43,7 +45,7 @@ const updateWorkspaces = () => {
 };
 
 const onSelect = (item: IWorkspace) => {
-  workspaces.setCurrentId(item.id.toString());
+  useEditor()?.workspaces?.setCurrentId(item.id.toString());
 };
 
 const openContextMenu = (e: MouseEvent, node: any) => {
@@ -57,6 +59,9 @@ const openContextMenu = (e: MouseEvent, node: any) => {
         label: "复制",
         onClick: async () => {
           if (!node.id) return;
+          const editor = useEditor();
+          if (!editor) return;
+          const { workspaces, canvas } = editor;
           const workspace = workspaces.get(node.id.toString());
           if (!workspace) return;
           const id = workspaces.add(`${pages.value.size + 1}`);
@@ -68,11 +73,13 @@ const openContextMenu = (e: MouseEvent, node: any) => {
       },
       {
         label: "删除",
-        disabled:
-          workspaces.size() <= 1 || node.id === workspaces.getCurrentId(),
+        disabled: (() => {
+          const workspaces = useEditor()?.workspaces;
+          return !workspaces || workspaces.size() <= 1 || node.id === workspaces.getCurrentId();
+        })(),
         onClick: () => {
           if (!node.id) return;
-          workspaces.remove(node.id.toString());
+          useEditor()?.workspaces?.remove(node.id.toString());
         },
         // divided: true,
       },
@@ -87,21 +94,31 @@ const openContextMenu = (e: MouseEvent, node: any) => {
 };
 
 const addOnClick = () => {
+  const editor = useEditor();
+  if (!editor) return;
+  const { workspaces, canvas } = editor;
   workspaces.setCurrentId(workspaces.add(`${pages.value.size + 1}`));
   canvas.zoomToFit();
 };
 
-event.on("workspaceChangeAfter", updateWorkspaces);
-event.on("workspaceAddAfter", updateWorkspaces);
-event.on("workspaceRemoveAfter", updateWorkspaces);
-
-onUnmounted(() => {
-  event.off("workspaceChangeAfter", updateWorkspaces);
-  event.off("workspaceAddAfter", updateWorkspaces);
-  event.off("workspaceRemoveAfter", updateWorkspaces);
+onMounted(() => {
+  const event = useEditor()?.event;
+  if (event) {
+    event.on("workspaceChangeAfter", updateWorkspaces);
+    event.on("workspaceAddAfter", updateWorkspaces);
+    event.on("workspaceRemoveAfter", updateWorkspaces);
+  }
+  updateWorkspaces();
 });
 
-updateWorkspaces();
+onUnmounted(() => {
+  const event = useEditor()?.event;
+  if (event) {
+    event.off("workspaceChangeAfter", updateWorkspaces);
+    event.off("workspaceAddAfter", updateWorkspaces);
+    event.off("workspaceRemoveAfter", updateWorkspaces);
+  }
+});
 </script>
 
 <style lang="less" scoped>

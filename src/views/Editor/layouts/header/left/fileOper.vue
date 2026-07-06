@@ -60,8 +60,7 @@ import { Message } from "@arco-design/web-vue";
 import { Layer } from "ag-psd";
 import { Image, IUI } from "leafer-ui";
 
-const { canvas } = useEditor();
-
+// const { canvas } = useEditor();
 const showFileOper = ref(false);
 const visible = ref(false);
 const processTitle = ref("正在导入");
@@ -103,6 +102,8 @@ const insertImg = async (clear = false) => {
       Array.from(fileList).forEach(async (item) => {
         // const {arrayBuffer} = await toArrayBuffer(item)
         const url = URL.createObjectURL(item);
+        const canvas = useEditor()?.canvas;
+        if (!canvas) return;
         let image = new Image({
           name: getDefaultName(canvas.contentFrame),
           url: url,
@@ -131,6 +132,8 @@ const importPsdFile = () => {
           .then(async (value: PsdParseResult) => {
             const { psd, layers } = value;
             processTitle.value = "正在导入";
+            const canvas = useEditor()?.canvas;
+            if (!canvas) return;
             canvas.contentFrame.clear();
             canvas.contentFrame.width = psd.width;
             canvas.contentFrame.height = psd.height;
@@ -175,7 +178,10 @@ const importJsonFile = () => {
     const reader = new FileReader();
     reader.readAsText(file, "UTF-8");
     reader.onload = () => {
-      canvas.importJsonToCurrentPage(JSON.parse(<string>reader.result), true);
+      const canvas = useEditor()?.canvas;
+      if (canvas) {
+        canvas.importJsonToCurrentPage(JSON.parse(<string>reader.result), true);
+      }
       visible.value = false;
     };
   });
@@ -183,7 +189,10 @@ const importJsonFile = () => {
 
 const copyFile = () => {};
 
-const parseLayers = (layers: Layer[], parent: IUI = canvas.contentFrame) => {
+const parseLayers = (layers: Layer[], parent?: IUI) => {
+  const canvas = useEditor()?.canvas;
+  if (!canvas) return Promise.resolve(null);
+  if (!parent) parent = canvas.contentFrame;
   return new Promise((resolve) => {
     layers.reverse();
     let group: Layer[] = [];
@@ -245,7 +254,10 @@ const parseLayers = (layers: Layer[], parent: IUI = canvas.contentFrame) => {
   });
 };
 
-const addGroup = (layer: Layer, parent: IUI = canvas.contentFrame) => {
+const addGroup = (layer: Layer, parent?: IUI) => {
+  const canvas = useEditor()?.canvas;
+  if (!canvas) return null;
+  if (!parent) parent = canvas.contentFrame;
   let group = parseGroup(layer);
   canvas.bindDragDrop(group);
   parent.add(group);
@@ -255,13 +267,19 @@ const addGroup = (layer: Layer, parent: IUI = canvas.contentFrame) => {
 const addMask = async (
   index: number,
   groups: Layer[],
-  parent: IUI = canvas.contentFrame,
+  parent?: IUI,
 ) => {
+  const canvas = useEditor()?.canvas;
+  if (!canvas) return null;
+  if (!parent) parent = canvas.contentFrame;
   const mask = parseMask(index, groups, parent);
   return mask;
 };
 
-const addObj = (layer: Layer, parent: IUI = canvas.contentFrame) => {
+const addObj = (layer: Layer, parent?: IUI) => {
+  const canvas = useEditor()?.canvas;
+  if (!canvas) return null;
+  if (!parent) parent = canvas.contentFrame;
   let obj;
   if (layer.text) {
     // 文字

@@ -16,13 +16,12 @@
 <script setup lang="ts">
 import { useEditor } from "@/views/Editor/app";
 
-const { canvas, keybinding, undoRedo } = useEditor();
 const undo = () => {
-  keybinding.trigger("mod+z");
+  useEditor()?.keybinding.trigger("mod+z");
 };
 
 const redo = () => {
-  keybinding.trigger("mod+y");
+  useEditor()?.keybinding.trigger("mod+y");
 };
 </script>
 

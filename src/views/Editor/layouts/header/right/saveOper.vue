@@ -132,8 +132,6 @@
 </template>
 <script setup lang="ts">
 import { useEditor } from "@/views/Editor/app";
-
-const { editor, keybinding } = useEditor();
 import { downFile } from "@/utils/designUtil";
 import { v4 as uuidv4 } from "uuid";
 import { Notification } from "@arco-design/web-vue";
@@ -171,12 +169,16 @@ const resetForm = () => {
   };
 };
 const preview = async () => {
+  const editor = useEditor()?.editor;
+  if (!editor) return;
   const result = await editor.contentFrame.export("png", { blob: true });
   const url = URL.createObjectURL(result.data);
   previewUrl.value = url;
   visiblePreview.value = true;
 };
 const save = () => {
+  const editor = useEditor()?.editor;
+  if (!editor) return;
   Notification.info({
     closable: true,
     content: "请到控制台查看打印的JSON值",
@@ -193,6 +195,8 @@ const handleDownload = () => {
 };
 
 const handleExport = () => {
+  const editor = useEditor()?.editor;
+  if (!editor) return;
   let fileName = uuidv4();
   editor.contentFrame.export(
     `${fileName}.${exportForm.value.fileType}`,
@@ -201,6 +205,8 @@ const handleExport = () => {
 };
 
 const handleSelect = (v: any) => {
+  const editor = useEditor()?.editor;
+  if (!editor) return;
   let fileName = uuidv4();
   switch (v) {
     case "png":
@@ -221,6 +227,8 @@ const handleSelect = (v: any) => {
   }
 };
 function saveJson() {
+  const editor = useEditor()?.editor;
+  if (!editor) return;
   const dataUrl = editor.contentFrame.toJSON();
   const fileStr = `data:text/json;charset=utf-8,${encodeURIComponent(
     JSON.stringify(dataUrl, null, "\t"),

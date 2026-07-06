@@ -9,11 +9,10 @@ import { isNumber } from "lodash";
 import { zoomItems } from "@/views/Editor/utils/contextMenu";
 import { useThemes } from "@/hooks/useThemes";
 
-const editor = useEditor();
-const canvas = editor?.canvas;
-const keybinding = editor?.keybinding;
-
-const zoom = canvas?.ref?.zoom ?? ref(1);
+const zoom = computed(() => {
+  const canvas = useEditor()?.canvas;
+  return canvas?.ref?.zoom?.value ?? 1;
+});
 const { isDark } = useThemes();
 const button = ref<ButtonInstance>();
 
@@ -53,6 +52,7 @@ const openMenu = (e: MouseEvent) => {
                   console.log("value", value);
                   const zoom = parseInt(value);
                   if (!isNumber(zoom) || Number.isNaN(zoom)) return;
+                  const canvas = useEditor()?.canvas;
                   canvas?.zoomToInnerPoint(NP.divide(zoom, 100));
                 },
               },
@@ -64,19 +64,22 @@ const openMenu = (e: MouseEvent) => {
       {
         label: "50%",
         onClick: () => {
+          const canvas = useEditor()?.canvas;
           canvas?.zoomToInnerPoint(0.5);
         },
       },
       {
         label: "100%",
         onClick: () => {
+          const keybinding = useEditor()?.keybinding;
           keybinding?.trigger("mod+0");
         },
-        shortcut: `${keybinding?.mod ?? "Ctrl"} 0`,
+        shortcut: `Ctrl 0`,
       },
       {
         label: "200%",
         onClick: () => {
+          const canvas = useEditor()?.canvas;
           canvas?.zoomToInnerPoint(2);
         },
         divided: true,
@@ -85,6 +88,7 @@ const openMenu = (e: MouseEvent) => {
   });
 };
 const handleFitZoom = () => {
+  const canvas = useEditor()?.canvas;
   canvas?.zoomToFit();
 };
 // 计算属性，根据 number 的值动态生成格式化后的字符串
