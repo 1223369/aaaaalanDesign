@@ -7,7 +7,10 @@
           v-for="(item, index) in workspacesData"
           @click="onSelect(item)"
           @contextmenu.stop="openContextMenu($event, item)"
-          :class="{ 'page-selected': useEditor()?.workspaces?.getCurrentId() === item.id }"
+          :class="{
+            'page-selected':
+              useEditor()?.workspaces?.getCurrentId() === item.id,
+          }"
           :key="index"
         >
           <a-avatar class="page-ava" :size="30" shape="square">{{
@@ -26,7 +29,6 @@
 import { IWorkspace } from "../../core/workspaces/workspacesService";
 import { useEditor } from "@/views/Editor/app";
 import ContextMenu from "@/components/contextMenu";
-
 
 const workspacesData = ref<IWorkspace[]>([]);
 
@@ -75,7 +77,11 @@ const openContextMenu = (e: MouseEvent, node: any) => {
         label: "删除",
         disabled: (() => {
           const workspaces = useEditor()?.workspaces;
-          return !workspaces || workspaces.size() <= 1 || node.id === workspaces.getCurrentId();
+          return (
+            !workspaces ||
+            workspaces.size() <= 1 ||
+            node.id === workspaces.getCurrentId()
+          );
         })(),
         onClick: () => {
           if (!node.id) return;
@@ -95,6 +101,7 @@ const openContextMenu = (e: MouseEvent, node: any) => {
 
 const addOnClick = () => {
   const editor = useEditor();
+  console.log("editor", editor);
   if (!editor) return;
   const { workspaces, canvas } = editor;
   workspaces.setCurrentId(workspaces.add(`${pages.value.size + 1}`));
