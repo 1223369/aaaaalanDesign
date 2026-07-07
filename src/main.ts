@@ -13,10 +13,12 @@ import "@/utils/request";
 import pinia from "@/store";
 // 额外引入图标库
 import ArcoVueIcon from "@arco-design/web-vue/es/icon";
+import { createCore } from "@/views/Editor/core";
 
 const app = createApp(App);
 app.use(router);
 app.use(ArcoVue);
 app.use(ArcoVueIcon);
 app.use(pinia);
+app.use(createCore());
 app.mount("#app");
