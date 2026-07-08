@@ -1,5 +1,8 @@
 import { IMLeaferCanvas, MLeaferCanvas } from "../../core/canvas/mLeaferCanvas";
-import { IKeybindingService, KeybindingService } from "../../core/keybinding/keybindingService";
+import {
+  IKeybindingService,
+  KeybindingService,
+} from "../../core/keybinding/keybindingService";
 import { Disposable } from "../../utils/lifecycle";
 import { Point, PointerEvent } from "leafer-ui";
 import MenuComponent from "@/components/contextMenu";
@@ -53,6 +56,7 @@ export class ContextMenu extends Disposable {
   }
 
   private showLayerContextMenu(e: PointerEvent) {
+    console.log("e", e);
     e.stopDefault();
     const event = e.origin;
     const object = this.canvas.activeObject.value;

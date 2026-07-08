@@ -21,6 +21,7 @@ const undo = () => {
 };
 
 const redo = () => {
+  console.log("redo");
   useEditor()?.keybinding.trigger("mod+y");
 };
 </script>
