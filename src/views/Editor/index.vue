@@ -10,6 +10,7 @@
           <headerBar />
         </a-layout-header>
         <a-layout>
+          <leftPanel />
           <a-layout-content>
             <a-layout class="editor-box">
               <a-layout-content class="dea-main-container">
@@ -28,6 +29,7 @@
 
 <script setup lang="ts">
 import HeaderBar from "@/views/Editor/layouts/header/headerBar.vue";
+import LeftPanel from "@/views/Editor/layouts/panel/leftPanel/leftPanel.vue";
 import FooterBar from "@/views/Editor/layouts/footer/footerBar.vue";
 import CanvasEdit from "@/views/Editor/layouts/canvasEdit/canvasEdit.vue";
 import { getActiveCore } from "./core";
