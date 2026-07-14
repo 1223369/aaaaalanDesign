@@ -1,5 +1,13 @@
 <template>
-  <a-layout-sider class="sider-box" :class="active ? 'active' : ''">
+  <a-layout-sider 
+    class="sider-box" 
+    :class="{ 'active': active }"
+    :width="395" 
+    :collapsed-width="67" 
+    :collapsed="!active"
+    collapsible
+    :trigger="null"
+  >
     <div ref="widgetPanel" id="s-widget-panel">
       <div class="s-widget-classify">
         <ul class="s-classify-wrap">
@@ -16,22 +24,39 @@
             <span class="title">{{ item.name }}</span>
           </li>
         </ul>
-        <help>
           <ul class="b-classify-wrap">
             <li :class="['b-classify-item']">
               <icon-question-circle class="icon" />
               <span class="title">帮助</span>
             </li>
           </ul>
-        </help>
+      </div>
+      <div ref="widgetWrap" v-show="active" class="s-widget-wrap">
+        <component
+          v-for="(item, index) in widgetClassifyList"
+          :key="'com_' + index"
+          :is="item.component"
+          v-show="+activeWidgetClassify === index"
+          :active="+activeWidgetClassify === index"
+        />
+      </div>
+      <div v-show="active" class="s-side-wrap">
+        <a-tooltip effect="dark" content="收起侧边栏" placement="right">
+          <div class="pack__up" @click="active = false"></div>
+        </a-tooltip>
       </div>
     </div>
   </a-layout-sider>
 </template>
 <script setup lang="ts">
 import TempListWrap from "./wrap/TempListWrap.vue";
-const active = ref(true);
-const activeWidgetClassify = ref(0);
+// import ElementListWrap from "./wrap/ElementListWrap.vue";
+// import TextListWrap from "./wrap/TextListWrap.vue";
+// import ImageListWrap from "./wrap/ImageListWrap.vue";
+// import BackgroundWrap from "./wrap/BackgroundWrap.vue";
+// import GraphListWrap from "./wrap/GraphListWrap.vue";
+// import ToolsWrap from "./wrap/ToolsWrap.vue";
+// import Help from "@/views/Editor/layouts/panel/leftPanel/help.vue";
 
 const widgetClassifyList = [
   {
@@ -40,10 +65,56 @@ const widgetClassifyList = [
     show: false,
     component: TempListWrap,
   },
+  // {
+  //   name: "文字",
+  //   icon: "icon-edit",
+  //   show: false,
+  //   component: TextListWrap,
+  // },
+  // {
+  //   name: "元素",
+  //   icon: "icon-star",
+  //   show: false,
+  //   component: ElementListWrap,
+  // },
+  // {
+  //   name: "素材",
+  //   icon: "icon-common",
+  //   show: false,
+  //   component: GraphListWrap,
+  // },
+  // {
+  //   name: "图片",
+  //   icon: "icon-image",
+  //   show: false,
+  //   component: ImageListWrap,
+  // },
+  // {
+  //   name: "背景",
+  //   icon: "icon-mosaic",
+  //   show: false,
+  //   component: BackgroundWrap,
+  // },
+  // {
+  //   name: "工具",
+  //   icon: "icon-qrcode",
+  //   show: false,
+  //   component: ToolsWrap,
+  // },
+  // {
+  //   name: "AI",
+  //   icon: "icon-robot",
+  //   show: false,
+  // },
+  // {
+  //   name: "我的",
+  //   icon: "icon-user",
+  //   show: false,
+  // },
 ];
-
+const activeWidgetClassify = ref(0);
+const active = ref(true);
 const activeComponent = ref(widgetClassifyList[0]?.component);
-
 const clickClassify = (index: number) => {
   if (activeWidgetClassify.value === index) {
     active.value = !active.value;
@@ -53,23 +124,25 @@ const clickClassify = (index: number) => {
     activeComponent.value = widgetClassifyList[index].component;
   }
 };
+const getStyle = (index: number) => {
+  return {
+    display: activeWidgetClassify.value === index ? "" : "none",
+  };
+};
 </script>
-<style scoped lang="less">
+<style lang="less" scoped>
+// Color variables (appears count calculates by raw css)
 @import "../../../styles/layouts";
 @color1: #3e4651; // Appears 2 times
 @menuWidth: 67px; // 默认菜单宽度
 @active-text-color: #2254f4; // #1195db;
 .sider-box {
-  width: @menuWidth !important;
+  flex-shrink: 0 !important;
   :deep(.arco-layout-sider-children) {
     overflow: initial;
   }
 }
-.sider-box.active {
-  width: calc(@menuWidth + 329px) !important;
-}
 #s-widget-panel {
-  transition: all 1s;
   color: @color1;
   display: flex;
   flex-direction: row;
@@ -80,6 +153,7 @@ const clickClassify = (index: number) => {
     border-right: 1px solid rgba(0, 0, 0, 0.07);
     background-color: #ffffff;
     height: 100%;
+    flex-shrink: 0;
     text-align: center;
     display: grid;
     align-content: space-between;
@@ -183,8 +257,8 @@ const clickClassify = (index: number) => {
     height: 100%;
   }
   .s-side-wrap {
-    position: fixed;
-    left: calc(@leftPanelWidth + 66px);
+    position: absolute;
+    right: -20px;
     pointer-events: none;
     z-index: 100;
     width: 20px;

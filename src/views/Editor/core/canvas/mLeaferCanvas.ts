@@ -9,6 +9,7 @@ import {
   PropertyEvent,
   ResizeEvent,
 } from "leafer-ui";
+import "@leafer-in/view";
 import { createDecorator } from "../instantiation/instantiation";
 import { ILeafer, IUIInputData } from "@leafer-ui/interface";
 import { Ruler } from "leafer-x-ruler";

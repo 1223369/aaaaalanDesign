@@ -45,6 +45,7 @@ declare module 'vue' {
     IconEye: typeof import('@arco-design/web-vue/es/icon')['IconEye']
     IconFolder: typeof import('@arco-design/web-vue/es/icon')['IconFolder']
     IconFullscreen: typeof import('@arco-design/web-vue/es/icon')['IconFullscreen']
+    IconGithub: typeof import('@arco-design/web-vue/es/icon')['IconGithub']
     IconImport: typeof import('@arco-design/web-vue/es/icon')['IconImport']
     IconPaste: typeof import('@arco-design/web-vue/es/icon')['IconPaste']
     IconPlus: typeof import('@arco-design/web-vue/es/icon')['IconPlus']

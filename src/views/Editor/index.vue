@@ -9,12 +9,12 @@
         <a-layout-header>
           <headerBar />
         </a-layout-header>
-        <a-layout>
+        <a-layout style="overflow: hidden;">
           <leftPanel />
-          <a-layout-content>
+          <a-layout-content style="min-width: 0; overflow: hidden;">
             <a-layout class="editor-box">
               <a-layout-content class="dea-main-container">
-                <div style="background-color: #fff">
+                <div style="background-color: #fff; width: 100%; height: 100%; min-width: 0;">
                   <canvas-edit />
                 </div>
               </a-layout-content>
@@ -58,10 +58,14 @@ onBeforeUnmount(() => {
 .dea-main-container {
   background-color: #f1f2f4;
   max-width: 100%;
+  width: 100%;
+  min-width: 0;
   padding: @contentLayoutPadding;
   overflow: hidden;
   height: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 /*马赛克背景样式，和.contentBox一起使用，用起来有点晃眼*/
 .dea-main-container-wrap {

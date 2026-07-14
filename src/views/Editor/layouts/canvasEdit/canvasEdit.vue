@@ -18,6 +18,11 @@ onMounted(() => {
    * TODO 待官方修复
    */
   canvas.wrapperEl.style.display = "block";
+  // 让 Leafer canvas 绝对定位，不撑开父容器宽度
+  canvas.wrapperEl.style.position = "absolute";
+  canvas.wrapperEl.style.inset = "0";
+  canvas.wrapperEl.style.width = "100%";
+  canvas.wrapperEl.style.height = "100%";
   useResizeObserver(divRef, (entries) => {
     const [entry] = entries;
     const { width, height } = entry.contentRect;
@@ -31,6 +36,7 @@ onMounted(() => {
 .page-design {
   position: relative;
   overflow: hidden;
+  min-width: 0;
 }
 .contentBox {
   /*box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.1);*/
@@ -38,8 +44,9 @@ onMounted(() => {
 
 .contentBox {
   width: 100%;
+  min-width: 0;
   /*解决画布宽度一直增加的问题*/
-  display: flex;
+  position: relative;
   overflow: hidden;
   height: @contentBoxHeight;
   //background: url('../../../../assets/images/alpha-background.svg');
