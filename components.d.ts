@@ -39,6 +39,7 @@ declare module 'vue' {
     ContextMenuContextSubMenu: typeof import('./src/components/contextMenu/ContextSubMenu.vue')['default']
     ContextMenuContextSubMenuWrapper: typeof import('./src/components/contextMenu/ContextSubMenuWrapper.vue')['default']
     DropdownDropdown: typeof import('./src/components/dropdown/dropdown.vue')['default']
+    EditorModulesSearchHeader: typeof import('./src/components/editorModules/searchHeader.vue')['default']
     IconCopy: typeof import('@arco-design/web-vue/es/icon')['IconCopy']
     IconDown: typeof import('@arco-design/web-vue/es/icon')['IconDown']
     IconDownload: typeof import('@arco-design/web-vue/es/icon')['IconDownload']
