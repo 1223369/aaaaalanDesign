@@ -17,15 +17,15 @@
             <span
               :class="[
                 'cate__text',
-                { 'cate--select': +currentIndex === index },
+                { 'cate--select': +state.currentIndex === index },
               ]"
-              >{{ item.label }}</span
+              >{{ item?.label }}</span
             >
           </a-doption>
         </template>
       </a-dropdown>
       <a-input-search
-        v-model="searchValue"
+        v-model="state.searchValue"
         placeholder="输入关键词搜索"
         @search="onSearch"
       />
@@ -34,7 +34,14 @@
 </template>
 
 <script setup lang="ts">
+import { PropType } from "vue";
 import { IconMenu } from "@arco-design/web-vue/es/icon";
+
+export interface CateItem {
+  label?: string;
+  value?: string | number;
+  [key: string]: any;
+}
 
 const state: any = reactive({
   searchValue: "",
@@ -44,26 +51,19 @@ const state: any = reactive({
 
 const props = defineProps({
   cateList: {
-    type: Array,
-    default() {
-      return [];
-    },
+    type: Array as PropType<CateItem[]>,
+    default: (): CateItem[] => [],
   },
   currentIndex: {
     type: [Number, String],
-    default() {
-      return 0;
-    },
+    default: 0,
   },
-  searchValue: {
+  modelValue: {
     type: String,
-    default() {
-      return "";
-    },
+    default: "",
   },
 });
 
-// emit事件
 const emit = defineEmits(["update:modelValue", "search", "changeCate"]);
 
 const action = (
@@ -74,6 +74,29 @@ const action = (
   state.currentIndex = currentIndex;
   emit(fn, item, currentIndex);
 };
+
+const onSearch = (value: string) => {
+  emit("search", value);
+};
+
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (val !== state.searchValue) {
+      state.searchValue = val || "";
+    }
+  },
+  { immediate: true },
+);
+
+watch(
+  () => props.currentIndex,
+  (val) => {
+    state.currentIndex = val ?? 0;
+  },
+  { immediate: true },
+);
+
 const unwatch = watch(
   () => state.searchValue,
   () => {
@@ -83,12 +106,56 @@ const unwatch = watch(
 
 if (props.cateList) {
   state.cateList = props.cateList;
-  //   const { cate } = route.query
-  //   cate && (state.currentIndex = cate)
-  //   cate && action('change', state.materialCates[Number(cate)], Number(cate))
 }
 
 onBeforeUnmount(() => {
   unwatch();
 });
 </script>
+
+<style lang="less" scoped>
+:deep(.el-input__suffix) {
+  padding-top: 9px;
+}
+
+.search__wrap {
+  padding: 16px 1rem 0rem 0rem;
+  display: flex;
+  cursor: pointer;
+  justify-content: center;
+}
+
+.search {
+  &__type {
+    border: 1px solid #e8eaec;
+    color: #666666;
+    width: 44px;
+    margin: 0 0.6rem 0 1rem;
+    border-radius: 4px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+
+    .iconfont {
+      font-size: 20px;
+    }
+  }
+
+  &__type:hover {
+    color: rgb(var(--primary-6));
+  }
+}
+
+.cate {
+  &__text {
+    font-weight: bold;
+  }
+
+  &--select {
+    color: rgb(var(--primary-6));
+  }
+}
+</style>

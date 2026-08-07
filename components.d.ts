@@ -17,12 +17,15 @@ declare module 'vue' {
     AForm: typeof import('@arco-design/web-vue')['Form']
     AFormItem: typeof import('@arco-design/web-vue')['FormItem']
     AImagePreview: typeof import('@arco-design/web-vue')['ImagePreview']
+    AInputGroup: typeof import('@arco-design/web-vue')['InputGroup']
     AInputNumber: typeof import('@arco-design/web-vue')['InputNumber']
+    AInputSearch: typeof import('@arco-design/web-vue')['InputSearch']
     ALayout: typeof import('@arco-design/web-vue')['Layout']
     ALayoutContent: typeof import('@arco-design/web-vue')['LayoutContent']
     ALayoutFooter: typeof import('@arco-design/web-vue')['LayoutFooter']
     ALayoutHeader: typeof import('@arco-design/web-vue')['LayoutHeader']
     ALayoutSider: typeof import('@arco-design/web-vue')['LayoutSider']
+    AList: typeof import('@arco-design/web-vue')['List']
     AModal: typeof import('@arco-design/web-vue')['Modal']
     APopover: typeof import('@arco-design/web-vue')['Popover']
     ARadioGroup: typeof import('@arco-design/web-vue')['RadioGroup']
@@ -58,5 +61,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIconSvgIcon: typeof import('./src/components/svgIcon/svgIcon.vue')['default']
+    VueWaterfallPluginNextComponentsLazyImg: typeof import('./src/components/vue-waterfall-plugin-next/components/LazyImg.vue')['default']
+    VueWaterfallPluginNextComponentsWaterfall: typeof import('./src/components/vue-waterfall-plugin-next/components/Waterfall.vue')['default']
   }
 }
