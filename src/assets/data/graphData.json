@@ -1,0 +1,11 @@
+{
+  "cate": [
+    { "id": "1", "name": "基础图形" },
+    { "id": "2", "name": "装饰图形" }
+  ],
+  "list": [
+    { "id": 1, "name": "圆形", "category": "1", "cover": "https://picsum.photos/seed/g1/200/200" },
+    { "id": 2, "name": "方形", "category": "1", "cover": "https://picsum.photos/seed/g2/200/200" },
+    { "id": 3, "name": "花纹", "category": "2", "cover": "https://picsum.photos/seed/g3/200/200" }
+  ]
+}

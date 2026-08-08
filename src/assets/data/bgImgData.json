@@ -1,0 +1,6 @@
+{
+  "list": [
+    { "id": 1, "name": "背景1", "cover": "https://picsum.photos/seed/bg1/320/240" },
+    { "id": 2, "name": "背景2", "cover": "https://picsum.photos/seed/bg2/320/240" }
+  ]
+}

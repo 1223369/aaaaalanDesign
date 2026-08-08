@@ -7,7 +7,8 @@ import {PageParams} from "@/types/page";
  * @param params
  */
 export function queryTemplateList(params:PageParams) {
-  return axios.get('/api/template/templateList',{data:params});
+  // mock 从 body 解析参数，GET 用 data 才能写入 body
+  return axios.get('/api/template/templateList', { data: params, params });
 }
 
 /**

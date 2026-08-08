@@ -1,0 +1,64 @@
+{
+  "list": [
+    {
+      "id": 1,
+      "name": "模板一",
+      "cover": "https://picsum.photos/seed/template1/320/420"
+    },
+    {
+      "id": 2,
+      "name": "模板二",
+      "cover": "https://picsum.photos/seed/template2/320/360"
+    },
+    {
+      "id": 3,
+      "name": "模板三",
+      "cover": "https://picsum.photos/seed/template3/320/480"
+    },
+    {
+      "id": 4,
+      "name": "模板四",
+      "cover": "https://picsum.photos/seed/template4/320/300"
+    },
+    {
+      "id": 5,
+      "name": "模板五",
+      "cover": "https://picsum.photos/seed/template5/320/400"
+    },
+    {
+      "id": 6,
+      "name": "模板六",
+      "cover": "https://picsum.photos/seed/template6/320/350"
+    },
+    {
+      "id": 7,
+      "name": "模板七",
+      "cover": "https://picsum.photos/seed/template7/320/450"
+    },
+    {
+      "id": 8,
+      "name": "模板八",
+      "cover": "https://picsum.photos/seed/template8/320/380"
+    },
+    {
+      "id": 9,
+      "name": "模板九",
+      "cover": "https://picsum.photos/seed/template9/320/410"
+    },
+    {
+      "id": 10,
+      "name": "模板十",
+      "cover": "https://picsum.photos/seed/template10/320/330"
+    },
+    {
+      "id": 11,
+      "name": "模板十一",
+      "cover": "https://picsum.photos/seed/template11/320/460"
+    },
+    {
+      "id": 12,
+      "name": "模板十二",
+      "cover": "https://picsum.photos/seed/template12/320/390"
+    }
+  ]
+}

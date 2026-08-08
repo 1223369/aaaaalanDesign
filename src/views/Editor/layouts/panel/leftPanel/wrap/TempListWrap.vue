@@ -59,20 +59,28 @@ const onSearch = (value: any, ev: any) => {
 };
 
 const fetchData = () => {
-  queryTemplateList(page).then((res) => {
-    if (res.success) {
-      const newDataList = res.data.records;
+  if (page.noMore) return;
+  // 只传分页参数，避免把 dataList 等响应式整包塞进请求
+  const params = {
+    pageNum: page.pageNum,
+    pageSize: page.pageSize,
+  };
+  queryTemplateList(params)
+    .then((res: any) => {
+      // 拦截器成功时直接返回 { success, data }；兼容未拦截的 axios 原始结构
+      const payload = res?.data?.records !== undefined ? res.data : res?.data?.data || res?.data;
+      const newDataList = payload?.records || [];
+      const total = payload?.total ?? 0;
       if (newDataList.length > 0) {
         page.dataList.push(...newDataList);
         page.pageNum += 1;
       }
-      if (page.dataList.length >= res.data.total) {
-        page.noMore = true;
-      } else {
-        page.noMore = false;
-      }
-    }
-  });
+      page.noMore = page.dataList.length >= total || newDataList.length === 0;
+    })
+    .catch((err) => {
+      console.error("queryTemplateList error:", err);
+      page.noMore = true;
+    });
 };
 </script>
 

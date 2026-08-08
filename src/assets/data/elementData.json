@@ -1,0 +1,10 @@
+{
+  "cate": [
+    { "id": "1", "name": "图标" },
+    { "id": "2", "name": "贴纸" }
+  ],
+  "list": [
+    { "id": 1, "name": "图标1", "category": "1", "cover": "https://picsum.photos/seed/e1/200/200" },
+    { "id": 2, "name": "贴纸1", "category": "2", "cover": "https://picsum.photos/seed/e2/200/200" }
+  ]
+}

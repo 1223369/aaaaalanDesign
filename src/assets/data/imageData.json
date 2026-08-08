@@ -1,0 +1,7 @@
+{
+  "list": [
+    { "id": 1, "name": "图片1", "cover": "https://picsum.photos/seed/img1/320/240" },
+    { "id": 2, "name": "图片2", "cover": "https://picsum.photos/seed/img2/320/300" },
+    { "id": 3, "name": "图片3", "cover": "https://picsum.photos/seed/img3/320/280" }
+  ]
+}

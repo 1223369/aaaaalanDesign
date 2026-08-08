@@ -10,6 +10,8 @@ import "virtual:uno.css";
 import "virtual:svg-icons-register";
 import "./index.less";
 import "@/utils/request";
+// 开发环境启用 mock 接口（模板/素材等）
+import "@/mock";
 import pinia from "@/store";
 // 额外引入图标库
 import ArcoVueIcon from "@arco-design/web-vue/es/icon";

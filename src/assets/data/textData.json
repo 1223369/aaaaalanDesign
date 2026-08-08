@@ -1,0 +1,7 @@
+{
+  "list": [
+    { "id": 1, "name": "标题文字", "cover": "https://picsum.photos/seed/text1/320/120" },
+    { "id": 2, "name": "正文文字", "cover": "https://picsum.photos/seed/text2/320/120" },
+    { "id": 3, "name": "艺术字", "cover": "https://picsum.photos/seed/text3/320/120" }
+  ]
+}
