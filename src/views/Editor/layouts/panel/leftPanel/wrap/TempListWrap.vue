@@ -16,17 +16,23 @@
         max-height="calc(100vh - 115px)"
       >
         <template #item="{ item, url }">
-          <div class="temp-item">
-            <img
-              v-if="url"
-              :src="url"
-              class="temp-item__img"
-              :alt="item.name || ''"
-            />
-            <div v-else class="temp-item__placeholder">
-              {{ item.name || "模板" }}
+          <a-card
+            hoverable
+            @click="handleClick(item)"
+            class="cursor-pointer drop-shadow"
+            :body-style="{ padding: '0px' }"
+          >
+            <div class="">
+              <div class="tags">
+                <div class="tag">VIP</div>
+                <!--                                <div>ag</div>-->
+              </div>
+              <LazyImg :url="url" class="img" />
             </div>
-          </div>
+            <!--                      <div class="p5px">-->
+            <!--                          <span class="name truncated">{{ item.name }}</span>-->
+            <!--                      </div>-->
+          </a-card>
         </template>
       </comp-list-wrap>
     </div>
@@ -37,6 +43,8 @@
 import usePageMixin from "@/views/Editor/layouts/panel/leftPanel/wrap/mixins/pageMixin";
 import { queryTemplateList } from "@/api/editor/materials";
 import CompListWrap from "./CompListWrap.vue";
+import { useEditor } from "@/views/Editor/app";
+import { LazyImg } from "@/components/vue-waterfall-plugin-next";
 
 const config = {
   imgSelector: "cover",
@@ -49,6 +57,7 @@ const SearchHeader = defineAsyncComponent(
 const keyword = ref();
 const { page } = usePageMixin();
 const loading = ref(false);
+const { editor } = useEditor();
 
 const cateList = reactive([
   { label: "全部", value: "-1" },
@@ -83,8 +92,7 @@ const fetchData = () => {
         page.dataList.push(...newDataList);
         page.pageNum += 1;
       }
-      page.noMore =
-        page.dataList.length >= total || newDataList.length === 0;
+      page.noMore = page.dataList.length >= total || newDataList.length === 0;
     })
     .catch((err) => {
       console.error("queryTemplateList error:", err);
@@ -93,6 +101,10 @@ const fetchData = () => {
     .finally(() => {
       loading.value = false;
     });
+};
+
+const handleClick = (item: any) => {
+  editor.importJsonToCurrentPage(item.json, true);
 };
 
 onMounted(() => {
