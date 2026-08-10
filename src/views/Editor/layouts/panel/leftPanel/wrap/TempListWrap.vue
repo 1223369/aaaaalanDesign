@@ -17,8 +17,15 @@
       >
         <template #item="{ item, url }">
           <div class="temp-item">
-            <img v-if="url" :src="url" class="temp-item__img" :alt="item.name || ''" />
-            <div v-else class="temp-item__placeholder">{{ item.name || "模板" }}</div>
+            <img
+              v-if="url"
+              :src="url"
+              class="temp-item__img"
+              :alt="item.name || ''"
+            />
+            <div v-else class="temp-item__placeholder">
+              {{ item.name || "模板" }}
+            </div>
           </div>
         </template>
       </comp-list-wrap>
@@ -41,6 +48,7 @@ const SearchHeader = defineAsyncComponent(
 
 const keyword = ref();
 const { page } = usePageMixin();
+const loading = ref(false);
 
 const cateList = reactive([
   { label: "全部", value: "-1" },
@@ -59,40 +67,52 @@ const onSearch = (value: any, ev: any) => {
 };
 
 const fetchData = () => {
-  if (page.noMore) return;
-  // 只传分页参数，避免把 dataList 等响应式整包塞进请求
+  if (page.noMore || loading.value) return;
+  loading.value = true;
   const params = {
     pageNum: page.pageNum,
     pageSize: page.pageSize,
   };
   queryTemplateList(params)
     .then((res: any) => {
-      // 拦截器成功时直接返回 { success, data }；兼容未拦截的 axios 原始结构
-      const payload = res?.data?.records !== undefined ? res.data : res?.data?.data || res?.data;
+      // 拦截器已解包为 { success, data }
+      const payload = res?.data ?? res;
       const newDataList = payload?.records || [];
       const total = payload?.total ?? 0;
       if (newDataList.length > 0) {
         page.dataList.push(...newDataList);
         page.pageNum += 1;
       }
-      page.noMore = page.dataList.length >= total || newDataList.length === 0;
+      page.noMore =
+        page.dataList.length >= total || newDataList.length === 0;
     })
     .catch((err) => {
       console.error("queryTemplateList error:", err);
       page.noMore = true;
+    })
+    .finally(() => {
+      loading.value = false;
     });
 };
+
+onMounted(() => {
+  fetchData();
+});
 </script>
 
 <style scoped lang="less">
 .wrap {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .temp-wrap {
   width: 100%;
   height: calc(100vh - 115px);
+  overflow: hidden;
 }
 
 .temp-item {
