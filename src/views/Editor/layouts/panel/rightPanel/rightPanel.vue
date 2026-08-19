@@ -8,7 +8,7 @@
               <setting />
             </a-tab-pane>
             <a-tab-pane key="2" title="图层">
-              <layers />
+              <!-- <layers /> -->
             </a-tab-pane>
           </a-tabs>
         </div>
@@ -18,22 +18,21 @@
 </template>
 
 <script setup lang="ts">
-import { useEditor } from "@/views/Editor/app";
-import Layers from "@/views/Editor/layouts/panel/rightPanel/layers.vue";
+import { ref, onMounted } from "vue";
 import Setting from "@/views/Editor/layouts/panel/rightPanel/setting.vue";
 import { useResizeObserver } from "@vueuse/core";
 
-const { editor } = useEditor();
-const widgetWrap = ref();
+const widgetWrap = ref<HTMLDivElement>();
 const settingHeight = ref(0);
 
 onMounted(() => {
-  // 更新tree组件的高度
-  useResizeObserver(widgetWrap.value as HTMLDivElement, (entries) => {
-    const [entry] = entries;
-    const { height } = entry.contentRect;
-    settingHeight.value = height - 43;
-  });
+  if (widgetWrap.value) {
+    useResizeObserver(widgetWrap.value, (entries) => {
+      const [entry] = entries;
+      const { height } = entry.contentRect;
+      settingHeight.value = height - 43;
+    });
+  }
 });
 </script>
 
@@ -43,11 +42,10 @@ onMounted(() => {
   width: 100%;
   height: 100%;
 }
-// Color variables (appears count calculates by raw css)
-@color1: #3e4651; // Appears 2 times
-@menuWidth: 67px; // 默认菜单宽度
-@maxMenuWidth: 200px; // 最大菜单宽度
-@active-text-color: #2254f4; // #1195db;
+@color1: #3e4651;
+@menuWidth: 67px;
+@maxMenuWidth: 200px;
+@active-text-color: #2254f4;
 .sider-box {
   width: @menuWidth !important;
   :deep(.arco-layout-sider-children) {

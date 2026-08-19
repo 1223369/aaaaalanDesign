@@ -9,18 +9,26 @@
         <a-layout-header>
           <headerBar />
         </a-layout-header>
-        <a-layout style="overflow: hidden;">
+        <a-layout style="overflow: hidden">
           <leftPanel />
-          <a-layout-content style="min-width: 0; overflow: hidden;">
+          <a-layout-content style="min-width: 0; overflow: hidden">
             <a-layout class="editor-box">
               <a-layout-content class="dea-main-container">
-                <div style="background-color: #fff; width: 100%; height: 100%; min-width: 0;">
+                <div
+                  style="
+                    background-color: #fff;
+                    width: 100%;
+                    height: 100%;
+                    min-width: 0;
+                  "
+                >
                   <canvas-edit />
                 </div>
               </a-layout-content>
               <footerBar />
             </a-layout>
           </a-layout-content>
+          <rightPanel />
         </a-layout>
       </a-layout>
     </a-spin>
@@ -32,6 +40,7 @@ import HeaderBar from "@/views/Editor/layouts/header/headerBar.vue";
 import LeftPanel from "@/views/Editor/layouts/panel/leftPanel/leftPanel.vue";
 import FooterBar from "@/views/Editor/layouts/footer/footerBar.vue";
 import CanvasEdit from "@/views/Editor/layouts/canvasEdit/canvasEdit.vue";
+import RightPanel from "@/views/Editor/layouts/panel/rightPanel";
 import { getActiveCore } from "./core";
 import { EditorMain } from "./app/editor";
 import { appInstance } from "./app";
