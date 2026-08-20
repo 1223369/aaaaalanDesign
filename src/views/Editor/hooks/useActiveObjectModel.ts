@@ -1,16 +1,30 @@
-import { useEditor } from "@/views/Editor/app";
-import { isDefined } from "@vueuse/core";
 import { computed, ref, watchEffect } from "vue";
 import type { ComputedRef } from "vue";
-import { toFixed } from "@/utils/math";
+import { isDefined } from "@vueuse/core";
 import { isArray, isNumber } from "lodash";
-import { ILeaf, IUI } from "@leafer-ui/interface";
+import { ILeaf, IUI, IUIInputData } from "@leafer-ui/interface";
+import { useEditor } from "@/views/Editor/app";
+import { toFixed } from "@/utils/math";
 
 type ParseType = Function | "default" | "preset" | null;
 
+/**
+ * @function useActiveObjectModel
+ * @description 获取并绑定当前选中对象的属性模型，支持属性双向同步与撤销重做历史记录
+ * @param {K} key 属性名称 (如 width, height, overflow 等)
+ * @param {any} [defaultValue] 默认值
+ * @param {ParseType} [parseFun] 解析规则类型
+ * @returns {ComputedRef} 返回包含 modelValue, disabled, onSwipe, onChange 的计算属性
+ */
 export const useActiveObjectModel = <
-  K extends keyof ILeaf,
-  T = ILeaf[K] | undefined,
+  K extends keyof IUI | keyof IUIInputData | keyof ILeaf | (string & {}),
+  T = K extends keyof IUI
+    ? IUI[K]
+    : K extends keyof IUIInputData
+    ? IUIInputData[K]
+    : K extends keyof ILeaf
+    ? ILeaf[K]
+    : any,
 >(
   key: K,
   defaultValue?: any,
