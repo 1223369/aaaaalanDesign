@@ -83,9 +83,13 @@ export function useColor(
 
   /** 展示文字 */
   const formatValue=computed(()=>(index:number)=>{
-    const colorVal = color.value[index]
+    const colorVal = color.value?.[index]
+    if (!colorVal) return ''
     let text = ''
-    if (isString(colorVal) || colorVal.type==='solid') {
+    if (isString(colorVal)) {
+      const fabricColor = new GColor(colorVal)
+      text = fabricColor.hex.toUpperCase()
+    } else if (colorVal.type==='solid' || colorVal.color) {
       const fabricColor = new GColor(colorVal.color)
       text = fabricColor.hex.toUpperCase()
     } else if (typeUtil.isGradient(colorVal)) {
@@ -108,7 +112,7 @@ export function useColor(
     ColorPicker.close()
     appInstance.editor.service.invokeFunction((accessor) => {
       const canvas = accessor.get(IMLeaferCanvas)
-      if (!isDefined(canvas.activeObject)) return
+      if (!isDefined(canvas.activeObject?.value)) return
       closeFn = ColorPicker.open({
         object: canvas.activeObject.value,
         attr: option.attr,
